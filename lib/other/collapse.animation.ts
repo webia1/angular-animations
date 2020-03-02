@@ -77,45 +77,49 @@ export function collapseAnimation(options?: IAnimationOptions): AnimationTrigger
   ]);
 }
 
-const expand = animation(
-  animate(
-    '{{duration}}ms {{delay}}ms',
-    keyframes([
-      style({ height: '0', visibility: 'hidden', overflow: 'hidden', easing: 'ease-out', offset: 0 }),
-      style({ height: AUTO_STYLE, visibility: AUTO_STYLE, overflow: 'hidden', easing: 'ease-out', offset: 1 })
-    ])
-  )
-);
+const expand = () =>
+  animation(
+    animate(
+      '{{duration}}ms {{delay}}ms',
+      keyframes([
+        style({ height: '0', visibility: 'hidden', overflow: 'hidden', easing: 'ease-out', offset: 0 }),
+        style({ height: AUTO_STYLE, visibility: AUTO_STYLE, overflow: 'hidden', easing: 'ease-out', offset: 1 })
+      ])
+    )
+  );
 
-const fadeInExpand = animation(
-  animate(
-    '{{duration}}ms {{delay}}ms',
-    keyframes([
-      style({ height: '0', opacity: 0, visibility: 'hidden', overflow: 'hidden', easing: 'ease-out', offset: 0 }),
-      style({ height: AUTO_STYLE, opacity: AUTO_STYLE, visibility: AUTO_STYLE, overflow: 'hidden', easing: 'ease-out', offset: 1 })
-    ])
-  )
-);
+const fadeInExpand = () =>
+  animation(
+    animate(
+      '{{duration}}ms {{delay}}ms',
+      keyframes([
+        style({ height: '0', opacity: 0, visibility: 'hidden', overflow: 'hidden', easing: 'ease-out', offset: 0 }),
+        style({ height: AUTO_STYLE, opacity: AUTO_STYLE, visibility: AUTO_STYLE, overflow: 'hidden', easing: 'ease-out', offset: 1 })
+      ])
+    )
+  );
 
-const collapse = animation(
-  animate(
-    '{{duration}}ms {{delay}}ms',
-    keyframes([
-      style({ height: AUTO_STYLE, visibility: AUTO_STYLE, overflow: 'hidden', easing: 'ease-in', offset: 0 }),
-      style({ height: '0', visibility: 'hidden', overflow: 'hidden', easing: 'ease-in', offset: 1 })
-    ])
-  )
-);
+const collapse = () =>
+  animation(
+    animate(
+      '{{duration}}ms {{delay}}ms',
+      keyframes([
+        style({ height: AUTO_STYLE, visibility: AUTO_STYLE, overflow: 'hidden', easing: 'ease-in', offset: 0 }),
+        style({ height: '0', visibility: 'hidden', overflow: 'hidden', easing: 'ease-in', offset: 1 })
+      ])
+    )
+  );
 
-const fadeOutCollapse = animation(
-  animate(
-    '{{duration}}ms {{delay}}ms',
-    keyframes([
-      style({ height: AUTO_STYLE, opacity: AUTO_STYLE, visibility: AUTO_STYLE, overflow: 'hidden', easing: 'ease-in', offset: 0 }),
-      style({ height: '0', opacity: 0, visibility: 'hidden', overflow: 'hidden', easing: 'ease-in', offset: 1 })
-    ])
-  )
-);
+const fadeOutCollapse = () =>
+  animation(
+    animate(
+      '{{duration}}ms {{delay}}ms',
+      keyframes([
+        style({ height: AUTO_STYLE, opacity: AUTO_STYLE, visibility: AUTO_STYLE, overflow: 'hidden', easing: 'ease-in', offset: 0 }),
+        style({ height: '0', opacity: 0, visibility: 'hidden', overflow: 'hidden', easing: 'ease-in', offset: 1 })
+      ])
+    )
+  );
 
 export function expandOnEnterAnimation(options?: IAnimationOptions): AnimationTriggerMetadata {
   return trigger((options && options.anchor) || 'expandOnEnter', [
@@ -125,7 +129,7 @@ export function expandOnEnterAnimation(options?: IAnimationOptions): AnimationTr
         style({ visibility: 'hidden' }),
         ...(options && options.animateChildren === 'before' ? [query('@*', animateChild(), { optional: true })] : []),
         group([
-          useAnimation(expand),
+          useAnimation(expand()),
           ...(!options || !options.animateChildren || options.animateChildren === 'together'
             ? [query('@*', animateChild(), { optional: true })]
             : [])
@@ -149,7 +153,7 @@ export function collapseOnLeaveAnimation(options?: IAnimationOptions): Animation
       [
         ...(options && options.animateChildren === 'before' ? [query('@*', animateChild(), { optional: true })] : []),
         group([
-          useAnimation(collapse),
+          useAnimation(collapse()),
           ...(!options || !options.animateChildren || options.animateChildren === 'together'
             ? [query('@*', animateChild(), { optional: true })]
             : [])
@@ -174,7 +178,7 @@ export function fadeInExpandOnEnterAnimation(options?: IAnimationOptions): Anima
         style({ visibility: 'hidden' }),
         ...(options && options.animateChildren === 'before' ? [query('@*', animateChild(), { optional: true })] : []),
         group([
-          useAnimation(fadeInExpand),
+          useAnimation(fadeInExpand()),
           ...(!options || !options.animateChildren || options.animateChildren === 'together'
             ? [query('@*', animateChild(), { optional: true })]
             : [])
@@ -198,7 +202,7 @@ export function fadeOutCollapseOnLeaveAnimation(options?: IAnimationOptions): An
       [
         ...(options && options.animateChildren === 'before' ? [query('@*', animateChild(), { optional: true })] : []),
         group([
-          useAnimation(fadeOutCollapse),
+          useAnimation(fadeOutCollapse()),
           ...(!options || !options.animateChildren || options.animateChildren === 'together'
             ? [query('@*', animateChild(), { optional: true })]
             : [])
